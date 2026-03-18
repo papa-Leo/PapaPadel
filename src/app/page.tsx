@@ -1,11 +1,11 @@
 'use client'
 // src/app/page.tsx
+import 'dotenv/config'
 import { useState, useEffect, useCallback } from 'react'
 import { parse, format, addDays, startOfToday, isBefore } from 'date-fns'
 import { LogIn, LogOut, Calendar, User, ChevronLeft, ChevronRight } from 'lucide-react'
 import { createClient, Database } from '@/lib/supabase'
 import { useAuth } from '@/hooks/useAuth'
-import { CLOSE_TIME, SLOT_DURATION, MAX_ADVANCE_BOOKING_DAYS } from '@/lib/timeSlots'
 import CourtCard from '@/components/CourtCard'
 import BookingModal from '@/components/BookingModal'
 import MyBookings from '@/components/MyBookings'
@@ -20,6 +20,11 @@ type ActiveModal =
   | null;
 
 export default function Home() {
+  const CLOSE_TIME = process.env.NEXT_PUBLIC_CLOSE_TIME || '20:00'
+  const SLOT_DURATION = parseInt(process.env.NEXT_PUBLIC_SLOT_DURATION || '30')
+  const MAX_ADVANCE_BOOKING_DAYS = parseInt(process.env.NEXT_PUBLIC_MAX_ADVANCE_BOOKING_DAYS || '14')
+  const TITLE = process.env.NEXT_PUBLIC_APPLICATION_TITLE || 'PapaPadel'
+
   const defaultDate = isBefore(Date.now(), parse(CLOSE_TIME, 'HH:mm', new Date())) ? format(startOfToday(), 'yyyy-MM-dd') : format(addDays(startOfToday(), 1), 'yyyy-MM-dd')
   const today = startOfToday()
   const maxDate = addDays(today, MAX_ADVANCE_BOOKING_DAYS)
@@ -68,7 +73,7 @@ export default function Home() {
       <nav className="navbar">
         <div className="nav-brand">
           <span className="logo-mark">⬡</span>
-          AcaPadel
+          {TITLE}
         </div>
         <div className="nav-actions">
           {!authLoading && (

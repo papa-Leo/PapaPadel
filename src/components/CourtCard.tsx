@@ -31,7 +31,6 @@ export default function CourtCard({ court, selectedDate, onSlotSelect, isLoggedI
         .eq('status', 'confirmed')
 
       setBookedSlots(new Set((data ?? []).map(b => getBookedSlotsInBooking(b.start_time.slice(0, 5))).flat()))
-      // setBookedSlots(new Set((data ?? []).map(b => b.start_time.slice(0, 5))))
       setLoading(false)
     }
     fetchBooked()

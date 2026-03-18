@@ -27,7 +27,7 @@ export default function BookingModal({
   const [error, setError] = useState<string | null>(null)
 
   const endTime = getEndTime(startTime)
-  const MAXIMUM_BOOKINGS = 2
+  const MAXIMUM_BOOKINGS = parseInt(process.env.NEXT_PUBLIC_MAX_BOOKINGS || '2')
 
   const handleBook = async () => {
     setLoading(true)
@@ -61,7 +61,7 @@ export default function BookingModal({
 
     console.log(`count: ${count}`)
 
-    if (count === null || count >= 2) {
+    if (count === null || count >= MAXIMUM_BOOKINGS) {
       setError('You have reached your maximum booking limit. Cancel a previous booking to make a new one.')
       setLoading(false)
       return

@@ -87,11 +87,12 @@ supabase/
 
 | What | Where |
 |------|-------|
-| Session duration (default 60 min) | `src/lib/timeSlots.ts` → `SLOT_DURATION` |
-| Booking slots (time between possible bookings) | `src/lib/timeSlots.ts` → `SLOT_STEP` |
-| Opening / closing hours | `src/lib/timeSlots.ts` → `OPEN_TIME`, `CLOSE_TIME` |
-| Maximum concurrent bookings per user | `src/components/BookingModal.tsx` → `MAXIMUM_BOOKINGS` |
-| How far ahead users can book | `src/lib/timeSlots.ts` → `MAX_ADVANCE_BOOKING_DAYS` |
+| Session duration (default 60 min) | `.env.local` → `NEXT_PUBLIC_SLOT_DURATION` |
+| Booking slots (time between possible bookings) | `.env.local` → `NEXT_PUBLIC_SLOT_STEP` |
+| Opening / closing hours | `.env.local` → `NEXT_PUBLIC_OPEN_TIME`, `NEXT_PUBLIC_CLOSE_TIME` |
+| Maximum concurrent bookings per user | `.env.local` → `NEXT_PUBLIC_MAXIMUM_BOOKINGS` |
+| How far ahead users can book | `.env.local` → `NEXT_PUBLIC_MAX_ADVANCE_BOOKING_DAYS` |
+| Application title | `.env.local` → `NEXT_PUBLIC_APPLICATION_TITLE` |
 | Courts list | Run SQL `INSERT INTO courts ...` or add an admin panel |
 | Colors & fonts | `src/app/globals.css` → `:root` variables |
 

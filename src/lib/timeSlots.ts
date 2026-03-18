@@ -1,11 +1,11 @@
 // src/lib/timeSlots.ts
 import { format, addMinutes, parse, isBefore } from 'date-fns'
+import 'dotenv/config'
 
-export const SLOT_DURATION = 60 // minutes
-export const SLOT_STEP = 30 // minutes between possible bookings
-export const OPEN_TIME = '07:00'
-export const CLOSE_TIME = '20:00'
-export const MAX_ADVANCE_BOOKING_DAYS = 14 // book up to 2 weeks ahead
+const OPEN_TIME = process.env.NEXT_PUBLIC_OPEN_TIME || '07:00'
+const CLOSE_TIME = process.env.NEXT_PUBLIC_CLOSE_TIME || '20:00'
+const SLOT_STEP = parseInt(process.env.NEXT_PUBLIC_SLOT_STEP || '30')
+const SLOT_DURATION = parseInt(process.env.NEXT_PUBLIC_SLOT_DURATION || '60')
 
 /** Generate all possible start times for a day */
 export function generateTimeSlots(): string[] {
