@@ -153,7 +153,7 @@ export default function Home() {
       {/* LEGEND */}
       <div className="legend">
         <span className="legend-item available">Available</span>
-        <span className="legend-item booked">Booked/Unavailable</span>
+        <span className="legend-item booked">Unavailable</span>
         <span className="legend-item past">Past</span>
       </div>
 
