@@ -31,7 +31,7 @@ export function getEndTime(startTime: string): string {
 export function getBookedSlotsInBooking(startTime: string): string[] {
   const slots: string[] = []
   let current = parse(startTime, 'HH:mm', new Date())
-  const close = addMinutes(parse(startTime, 'HH:mm', new Date()), SLOT_DURATION)
+  const close = parse(getEndTime(startTime), 'HH:mm', new Date())
 
   while (isBefore(current, close)) {
     slots.push(format(current, 'HH:mm'))
