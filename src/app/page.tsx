@@ -2,7 +2,7 @@
 // src/app/page.tsx
 import 'dotenv/config'
 import { useState, useEffect, useCallback } from 'react'
-import { parse, format, addDays, startOfToday, isBefore } from 'date-fns'
+import { parse, format, addDays, subMinutes, startOfToday, isBefore } from 'date-fns'
 import { LogIn, LogOut, Calendar, User, ChevronLeft, ChevronRight } from 'lucide-react'
 import { createClient, Database } from '@/lib/supabase'
 import { useAuth } from '@/hooks/useAuth'
@@ -21,12 +21,12 @@ type ActiveModal =
 
 export default function Home() {
   const CLOSE_TIME = process.env.NEXT_PUBLIC_CLOSE_TIME || '20:00'
-  const SLOT_DURATION = parseInt(process.env.NEXT_PUBLIC_SLOT_DURATION || '30')
+  const SLOT_DURATION = parseInt(process.env.NEXT_PUBLIC_SLOT_DURATION || '60')
   const MAX_ADVANCE_BOOKING_DAYS = parseInt(process.env.NEXT_PUBLIC_MAX_ADVANCE_BOOKING_DAYS || '14')
   const TITLE = process.env.NEXT_PUBLIC_APPLICATION_TITLE || 'PapaPadel'
 
-  const defaultDate = isBefore(Date.now(), parse(CLOSE_TIME, 'HH:mm', new Date())) ? format(startOfToday(), 'yyyy-MM-dd') : format(addDays(startOfToday(), 1), 'yyyy-MM-dd')
   const today = startOfToday()
+  const defaultDate = isBefore(Date.now(), parse(format(subMinutes(parse(CLOSE_TIME, 'HH:mm', new Date()), SLOT_DURATION), 'HH:mm'), 'HH:mm', new Date())) ? format(today, 'yyyy-MM-dd') : format(addDays(today, 1), 'yyyy-MM-dd')
   const maxDate = addDays(today, MAX_ADVANCE_BOOKING_DAYS)
 
   const supabase = createClient()
