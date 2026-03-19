@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { Wind, Home, Clock } from 'lucide-react'
 import { createClient, Database } from '@/lib/supabase'
-import { generateTimeSlots, formatTime, getEndTime, isSlotPast, getBookedSlotsInBooking } from '@/lib/timeSlots'
+import { generateTimeSlots, formatTime, getEndTime, isSlotPast, getUnavailableSlots } from '@/lib/timeSlots'
 
 type Court = Database['public']['Tables']['courts']['Row']
 
@@ -30,7 +30,7 @@ export default function CourtCard({ court, selectedDate, onSlotSelect, isLoggedI
         .eq('date', selectedDate)
         .eq('status', 'confirmed')
 
-      setBookedSlots(new Set((data ?? []).map(b => getBookedSlotsInBooking(b.start_time.slice(0, 5))).flat()))
+      setBookedSlots(new Set((data ?? []).map(b => getUnavailableSlots(b.start_time.slice(0, 5), b.end_time.slice(0, 5))).flat()))
       setLoading(false)
     }
     fetchBooked()

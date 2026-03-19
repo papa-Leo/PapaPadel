@@ -1,6 +1,9 @@
 // src/lib/timeSlots.ts
-import { format, addMinutes, parse, isBefore } from 'date-fns'
+import { format, addMinutes, subMinutes, parse, isBefore, isAfter } from 'date-fns'
 import 'dotenv/config'
+import { Database } from './supabase'
+
+type Booking = Database['public']['Tables']['bookings']['Row']
 
 const OPEN_TIME = process.env.NEXT_PUBLIC_OPEN_TIME || '07:00'
 const CLOSE_TIME = process.env.NEXT_PUBLIC_CLOSE_TIME || '20:00'
@@ -28,15 +31,23 @@ export function getEndTime(startTime: string): string {
   return format(addMinutes(start, SLOT_DURATION), 'HH:mm')
 }
 
-export function getBookedSlotsInBooking(startTime: string): string[] {
+export function getUnavailableSlots(startTime: string, endTime: string): string[] {
   const slots: string[] = []
   let current = parse(startTime, 'HH:mm', new Date())
-  const close = parse(getEndTime(startTime), 'HH:mm', new Date())
+  const open = parse(startTime, 'HH:mm', new Date())
+  const close = parse(endTime, 'HH:mm', new Date())
 
   while (isBefore(current, close)) {
     slots.push(format(current, 'HH:mm'))
     current = addMinutes(current, SLOT_STEP)
   }
+
+  current = subMinutes(open, SLOT_STEP)
+  while (isAfter(current, subMinutes(open, SLOT_DURATION))) {
+    slots.push(format(current, 'HH:mm'))
+    current = subMinutes(current, SLOT_STEP)
+  }
+
   return slots
 }
 
