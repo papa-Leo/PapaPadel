@@ -5,6 +5,7 @@ import { Calendar, Clock, X, CheckCircle } from 'lucide-react'
 import { createClient, Database } from '@/lib/supabase'
 import { formatTime } from '@/lib/timeSlots'
 import { format, isPast, parseISO, subDays } from 'date-fns'
+import ConfirmationDialog from '@/components/ConfirmationDialog'
 
 type Booking = Database['public']['Tables']['bookings']['Row'] & {
   courts: { name: string; is_indoor: boolean } | null
@@ -26,6 +27,7 @@ export default function MyBookings({
   const [loading, setLoading] = useState(true)
   const [cancellingId, setCancellingId] = useState<string | null>(null)
   const [wasCancellation, setWasCancellation] = useState<boolean>(false)
+  const [showConfirmationDialog, setShowConfirmationDialog] = useState<boolean>(false)
 
   const fetchBookings = async () => {
     const { data: upcomingData } = await supabase
@@ -52,15 +54,10 @@ export default function MyBookings({
   useEffect(() => { fetchBookings() }, [userId])
 
   const handleCancel = async (bookingId: string) => {
-    if (!confirm('Are you sure you want to cancel this booking?')) return
+    // if (!confirm('Are you sure you want to cancel this booking?')) return
+
     setCancellingId(bookingId)
-    await supabase
-      .from('bookings')
-      .update({ status: 'cancelled' })
-      .eq('id', bookingId)
-    await fetchBookings()
-    setCancellingId(null)
-    setWasCancellation(true);
+    setShowConfirmationDialog(true)
   }
 
   const upcoming = upcomingBookings.filter(b =>
@@ -130,6 +127,27 @@ export default function MyBookings({
             </div>
           ))}
         </section>
+      )}
+
+      {showConfirmationDialog && (
+        <ConfirmationDialog
+          title="Cancel Booking"
+          message="Are you sure you want to cancel this booking?"
+          onConfirm={async () => {
+            await supabase
+              .from('bookings')
+              .update({ status: 'cancelled' })
+              .eq('id', cancellingId!)
+            await fetchBookings()
+            setCancellingId(null)
+            setWasCancellation(true)
+            setShowConfirmationDialog(false)
+          }}
+          onCancel={() => {
+            setShowConfirmationDialog(false)
+            setCancellingId(null)
+          }}
+        />
       )}
     </div>
   )
