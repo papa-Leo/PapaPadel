@@ -3,7 +3,7 @@
 import 'dotenv/config'
 import { useState, useEffect, useCallback } from 'react'
 import { parse, format, addDays, subMinutes, startOfToday, isBefore } from 'date-fns'
-import { LogIn, LogOut, Calendar, User, ChevronLeft, ChevronRight } from 'lucide-react'
+import { LogIn, LogOut, Calendar, ChevronLeft, ChevronRight } from 'lucide-react'
 import { createClient, Database } from '@/lib/supabase'
 import { useAuth } from '@/hooks/useAuth'
 import CourtCard from '@/components/CourtCard'
