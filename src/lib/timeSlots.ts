@@ -20,8 +20,6 @@ export function generateTimeSlots(): string[] {
          format(addMinutes(current, SLOT_DURATION), 'HH:mm') === CLOSE_TIME) {
     slots.push(format(current, 'HH:mm'))
     current = addMinutes(current, SLOT_STEP)
-    if (!isBefore(addMinutes(current, SLOT_DURATION), close) &&
-        format(addMinutes(current, SLOT_DURATION), 'HH:mm') !== CLOSE_TIME) break
   }
   return slots
 }
