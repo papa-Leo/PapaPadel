@@ -69,8 +69,8 @@ export default function CourtCard({ court, selectedDate, onSlotSelect, isLoggedI
               <button
                 key={slot}
                 className={`slot-btn ${isBooked ? 'booked' : ''} ${isPast ? 'past' : ''} ${isAvailable ? 'available' : ''}`}
-                disabled={!isAvailable || !isLoggedIn}
-                onClick={() => isAvailable && isLoggedIn && onSlotSelect(court, slot)}
+                disabled={!isAvailable}
+                onClick={() => isAvailable && onSlotSelect(court, slot)}
                 title={
                   !isLoggedIn ? 'Sign in to book' :
                   isBooked ? 'Already booked' :

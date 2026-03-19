@@ -140,9 +140,9 @@ export default function Home() {
             court={court}
             selectedDate={selectedDate}
             isLoggedIn={!!user}
-            onSlotSelect={(court, startTime) =>
-              setActiveModal({ type: 'booking', court, startTime })
-            }
+            onSlotSelect={(court, startTime) => {
+              !user ? setActiveModal({ type: 'auth' }) : setActiveModal({ type: 'booking', court, startTime })
+            }}
           />
         ))}
         {filteredCourts.length === 0 && (
